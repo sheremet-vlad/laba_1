@@ -3,26 +3,25 @@ package main;
 import javax.swing.*;
 
 import java.awt.*;
+import java.util.ArrayList;
+
+import static create_gui_form.SwingConsole.run;
 
 
 public class Main_class extends JFrame {
+    public static ArrayList<Figure> listFigure;
     public static void main(String[] args) {
-        //JFrame form = run(new JFrame(),700,700);
-        JFrame f = new JFrame("hi");
-        f.setSize(500,500);
-        f.setVisible(true);
-        f.add(new Board());
-        System.out.println();
+        JFrame form = run(new Form(),700,700);
+
+        //создание списка Фигур
+        listFigure = new ArrayList<>();
+        listFigure.add(new Circle());
+        listFigure.add(new Rectangle());
+        listFigure.add(new Rhombus());
+        listFigure.add(new Segment());
+        listFigure.add(new Square());
+        listFigure.add(new Triangle());
     }
 
 }
 
-class Board extends JPanel {
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponents(g);
-        g.setColor(new Color(0, 0, 0));
-        g.fillRect(100, 100, 200, 200);
-    }
-
-}

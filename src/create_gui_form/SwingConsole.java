@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SwingConsole {
-    public JFrame run(final JFrame f, final int width, final int height) {
+    public static JFrame run(final JFrame f, final int width, final int height) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
