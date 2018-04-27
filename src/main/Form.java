@@ -5,26 +5,24 @@ import java.awt.*;
 import java.awt.event.*;
 
 import static main.Figure.arrayCoordinates;
+import static main.Main_class.listFigure;
 
 public class Form extends JFrame implements MouseListener, MouseMotionListener {
-    //int x1 = 300,x2 = 300, x3 = 50,x4= 10;
+
     public Figure activeFigure = new NonChooseFigure();
     private ButtonGroup  typeFigure = new ButtonGroup();
     int mouseX,mouseY;
     public Graphics g1;
 
-    public boolean check = false;
 
     private JRadioButton    radioCircle = new JRadioButton("Круг",false),
                             radioRectangle = new JRadioButton("Прямоугольник", false),
-                            radioRhombus = new JRadioButton("Ромб", false),
+                            radioOval = new JRadioButton("Овал", false),
                             radioSegment = new JRadioButton("Отрезок", false),
                             radioSquare = new JRadioButton("Квадрат", false),
                             radioTriangle = new JRadioButton("Треуггольник", false);
 
-    private JTextField fieldSize= new JTextField(40);
 
-    public JButton buttonDraw = new JButton("Рисовать");
 
     public Form() {
         setLayout(null);
@@ -33,7 +31,7 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         typeFigure.add(radioTriangle);
         typeFigure.add(radioRectangle);
         typeFigure.add(radioCircle);
-        typeFigure.add(radioRhombus);
+        typeFigure.add(radioOval);
         typeFigure.add(radioSegment);
         typeFigure.add(radioSquare);
 
@@ -44,7 +42,7 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         add(radioCircle).setBounds(50,y,width-50,height);
         add(radioRectangle).setBounds(120,y,width+20,height);
         add(radioTriangle).setBounds(240,y,width+20,height);
-        add(radioRhombus).setBounds(360,y,width,height);
+        add(radioOval).setBounds(360,y,width,height);
         add(radioSegment).setBounds(460,y,width,height);
         add(radioSquare).setBounds(560,y,width,height);
         //add(buttonDraw).setBounds(250,70,150,40);
@@ -60,19 +58,19 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         mouseX = me.getX();
         mouseY = me.getY();
         if (radioCircle.isSelected()){
-            activeFigure = new Circle();
+            activeFigure = listFigure.get(0);
         } else if (radioRectangle.isSelected()) {
-            activeFigure = new Rectangle();
-        } else if (radioRhombus.isSelected()) {
-            activeFigure = new Rhombus();
+            activeFigure = listFigure.get(1);
+        } else if (radioOval.isSelected()) {
+            activeFigure = listFigure.get(2);
         } else if (radioSegment.isSelected()) {
-            activeFigure = new Segment();
+            activeFigure = listFigure.get(3);
         } else if (radioSquare.isSelected()) {
-            activeFigure = new Square();
+            activeFigure = listFigure.get(4);
         } else if (radioTriangle.isSelected()) {
-            activeFigure = new Triangle();
+            activeFigure = listFigure.get(5);
         } else {
-            activeFigure = new NonChooseFigure();
+            activeFigure = listFigure.get(6);
         }
         repaint();
     }
@@ -91,7 +89,6 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
 
     public void paint(Graphics g) {
         super.paint(g);
-        //g.setColor(Color.BLACK);
         activeFigure.paintFigure(g,mouseX,mouseY);
     }
 
@@ -113,8 +110,8 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
     }
 
     public static void defineCoordinates(int x0, int y0, int x1, int y1 ) {
-        if (x0 < x1) {
-            if (y0 < y1) {
+        if (x0 <= x1) {
+            if (y0 <= y1) {
                 arrayCoordinates[0] = x0;
                 arrayCoordinates[1] = y0;
                 arrayCoordinates[2] = x1;
@@ -126,7 +123,7 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
                 arrayCoordinates[3] = y0;
             }
         } else {
-            if (y0 < y1) {
+            if (y0 <= y1) {
                 arrayCoordinates[0] = x1;
                 arrayCoordinates[1] = y0;
                 arrayCoordinates[2] = x0;

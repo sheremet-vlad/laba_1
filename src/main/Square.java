@@ -2,20 +2,29 @@ package main;
 
 import java.awt.*;
 
-import static main.Form.defineCoordinates;
+
 
 public class Square extends Figure {
+    public static int width;
     public void paintFigure(Graphics g, int x, int y){
-        defineCoordinates(x0,y0,x,y);
-        x = arrayCoordinates[2] - arrayCoordinates[0];
-        y = arrayCoordinates[3] - arrayCoordinates[1];
-        if (x > y){
-            g.drawRect(arrayCoordinates[0],arrayCoordinates[1],x,x);
+        if (x0 < x){
+            width = x - x0;
+            if(y0 < y){
+                g.drawRect(x0,y0,width,width);
+            }
+            else {
+                g.drawRect(x0,y0-width,width,width);
+            }
         }
         else {
-            g.drawRect(arrayCoordinates[0],arrayCoordinates[1],y,y);
+            width = x0 - x;
+            if(y0 < y){
+                g.drawRect(x,y0,width,width);
+            }
+            else {
+                g.drawRect(x,y0-width,width,width);
+            }
         }
-
         repaint();
     }
 }
