@@ -11,7 +11,6 @@ import static create_gui_form.SwingConsole.run;
 public class Main_class extends JFrame {
     public static ArrayList<Figure> listFigure;
     public static void main(String[] args) {
-        JFrame form = run(new Form(),700,700);
 
         //создание списка Фигур
         listFigure = new ArrayList<>();
@@ -21,6 +20,8 @@ public class Main_class extends JFrame {
         listFigure.add(new Segment());
         listFigure.add(new Square());
         listFigure.add(new Triangle());
+
+        JFrame form = run(new Form(),700,700);
     }
 
 }

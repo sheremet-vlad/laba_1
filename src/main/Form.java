@@ -2,13 +2,18 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class Form extends JFrame {
-    int x1 = 300,x2 = 300, x3 = 50,x4= 10;
-    public Graphics g1 = this.getGraphics();
+import static main.Figure.arrayCoordinates;
+
+public class Form extends JFrame implements MouseListener, MouseMotionListener {
+    //int x1 = 300,x2 = 300, x3 = 50,x4= 10;
+    public Figure activeFigure = new NonChooseFigure();
     private ButtonGroup  typeFigure = new ButtonGroup();
+    int mouseX,mouseY;
+    public Graphics g1;
+
+    public boolean check = false;
 
     private JRadioButton    radioCircle = new JRadioButton("Круг",false),
                             radioRectangle = new JRadioButton("Прямоугольник", false),
@@ -42,39 +47,96 @@ public class Form extends JFrame {
         add(radioRhombus).setBounds(360,y,width,height);
         add(radioSegment).setBounds(460,y,width,height);
         add(radioSquare).setBounds(560,y,width,height);
-        add(buttonDraw).setBounds(250,70,150,40);
+        //add(buttonDraw).setBounds(250,70,150,40);
 
-        //метод с дейтвиями комп-в
-        actionComponent();
 
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
-    public void actionComponent(){
-        buttonDraw.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                x1=400; x2 = 400; x3 = 150; x4 = 5;
-                repaint();
-            }
-        });
-    }
-
-    /*class Board extends JPanel {
-        @Override
-        public void paintComponent(Graphics g) {
-            // super.paintComponents(g);
-            g.setColor(new Color(0, 0, 0));
-            g.fillRect(100, 250, 200, 200);
+    public void mouseDragged(MouseEvent me) {
+        // сохранить координаты
+        mouseX = me.getX();
+        mouseY = me.getY();
+        if (radioCircle.isSelected()){
+            activeFigure = new Circle();
+        } else if (radioRectangle.isSelected()) {
+            activeFigure = new Rectangle();
+        } else if (radioRhombus.isSelected()) {
+            activeFigure = new Rhombus();
+        } else if (radioSegment.isSelected()) {
+            activeFigure = new Segment();
+        } else if (radioSquare.isSelected()) {
+            activeFigure = new Square();
+        } else if (radioTriangle.isSelected()) {
+            activeFigure = new Triangle();
+        } else {
+            activeFigure = new NonChooseFigure();
         }
-    }*/
+        repaint();
+    }
+
+    public void mousePressed(MouseEvent me) {
+        activeFigure.setX0(me.getX());
+        activeFigure.setY0(me.getY());
+        repaint();
+    }
+
+
+    public void mouseReleased(MouseEvent me) {
+
+    }
 
 
     public void paint(Graphics g) {
-       // g1 = g;
         super.paint(g);
-        g.setColor(Color.BLACK);
-        g.drawLine(300,300,50,10);
-        Figure fig = new Circle();
-        fig.paintFigure(g);
+        //g.setColor(Color.BLACK);
+        activeFigure.paintFigure(g,mouseX,mouseY);
+    }
+
+    public void mouseClicked(MouseEvent me) {
+        activeFigure = new NonChooseFigure();
+        super.repaint();
+    }
+
+    public void mouseEntered(MouseEvent me) {
+
+    }
+
+    public void mouseExited(MouseEvent me) {
+
+    }
+
+    public void mouseMoved(MouseEvent me) {
+
+    }
+
+    public static void defineCoordinates(int x0, int y0, int x1, int y1 ) {
+        if (x0 < x1) {
+            if (y0 < y1) {
+                arrayCoordinates[0] = x0;
+                arrayCoordinates[1] = y0;
+                arrayCoordinates[2] = x1;
+                arrayCoordinates[3] = y1;
+            } else {
+                arrayCoordinates[0] = x0;
+                arrayCoordinates[1] = y1;
+                arrayCoordinates[2] = x1;
+                arrayCoordinates[3] = y0;
+            }
+        } else {
+            if (y0 < y1) {
+                arrayCoordinates[0] = x1;
+                arrayCoordinates[1] = y0;
+                arrayCoordinates[2] = x0;
+                arrayCoordinates[3] = y1;
+            } else {
+                arrayCoordinates[0] = x1;
+                arrayCoordinates[1] = y1;
+                arrayCoordinates[2] = x0;
+                arrayCoordinates[3] = y0;
+            }
+        }
     }
 }
