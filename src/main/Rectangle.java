@@ -3,6 +3,7 @@ package main;
 import java.awt.*;
 
 import static main.Form.defineCoordinates;
+import static main.Main_class.arrayCoordinates;
 
 public class Rectangle extends Figure{
     public void paintFigure(Graphics g, int x, int y){

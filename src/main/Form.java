@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import static main.Figure.arrayCoordinates;
+
+import static main.Main_class.arrayCoordinates;
 import static main.Main_class.listFigure;
 
 public class Form extends JFrame implements MouseListener, MouseMotionListener {
@@ -12,7 +13,6 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
     public Figure activeFigure = new NonChooseFigure();
     private ButtonGroup  typeFigure = new ButtonGroup();
     int mouseX,mouseY;
-    public Graphics g1;
 
 
     private JRadioButton    radioCircle = new JRadioButton("Круг",false),
@@ -37,7 +37,6 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
 
         int width = 100, height = 50, y = 20;
 
-
         //добавление компонентов
         add(radioCircle).setBounds(50,y,width-50,height);
         add(radioRectangle).setBounds(120,y,width+20,height);
@@ -47,11 +46,10 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         add(radioSquare).setBounds(560,y,width,height);
         //add(buttonDraw).setBounds(250,70,150,40);
 
-
-
         addMouseListener(this);
         addMouseMotionListener(this);
     }
+
 
     public void mouseDragged(MouseEvent me) {
         // сохранить координаты
@@ -75,9 +73,11 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         repaint();
     }
 
+
     public void mousePressed(MouseEvent me) {
-        activeFigure.setX0(me.getX());
-        activeFigure.setY0(me.getY());
+        activeFigure.x0 = me.getX();
+        activeFigure.y0 = me.getY();
+        activeFigure = listFigure.get(6);
         repaint();
     }
 
@@ -89,6 +89,7 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
 
     public void paint(Graphics g) {
         super.paint(g);
+
         activeFigure.paintFigure(g,mouseX,mouseY);
     }
 
@@ -97,17 +98,6 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         super.repaint();
     }
 
-    public void mouseEntered(MouseEvent me) {
-
-    }
-
-    public void mouseExited(MouseEvent me) {
-
-    }
-
-    public void mouseMoved(MouseEvent me) {
-
-    }
 
     public static void defineCoordinates(int x0, int y0, int x1, int y1 ) {
         if (x0 <= x1) {
@@ -135,5 +125,19 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
                 arrayCoordinates[3] = y0;
             }
         }
+    }
+
+
+
+    public void mouseEntered(MouseEvent me) {
+
+    }
+
+    public void mouseExited(MouseEvent me) {
+
+    }
+
+    public void mouseMoved(MouseEvent me) {
+
     }
 }
