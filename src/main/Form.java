@@ -3,16 +3,20 @@ package main;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 import static main.Main_class.arrayCoordinates;
-import static main.Main_class.listFigure;
 
 public class Form extends JFrame implements MouseListener, MouseMotionListener {
 
     public Figure activeFigure = new NonChooseFigure();
     private ButtonGroup  typeFigure = new ButtonGroup();
     int mouseX,mouseY;
+    public static ArrayList<Figure> listOfFigure = new ArrayList<>();
+
+    private JButton buttonClear = new JButton("Очистить");
 
 
     private JRadioButton    radioCircle = new JRadioButton("Круг",false),
@@ -38,16 +42,30 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         int width = 100, height = 50, y = 20;
 
         //добавление компонентов
-        add(radioCircle).setBounds(50,y,width-50,height);
-        add(radioRectangle).setBounds(120,y,width+20,height);
-        add(radioTriangle).setBounds(240,y,width+20,height);
-        add(radioOval).setBounds(360,y,width,height);
-        add(radioSegment).setBounds(460,y,width,height);
-        add(radioSquare).setBounds(560,y,width,height);
+        add(radioCircle).setBounds(10,y,width-50,height);
+        add(radioRectangle).setBounds(80,y,width+20,height);
+        add(radioTriangle).setBounds(200,y,width+20,height);
+        add(radioOval).setBounds(320,y,width-40,height);
+        add(radioSegment).setBounds(380,y,width,height);
+        add(radioSquare).setBounds(480,y,width-20,height);
+        add(buttonClear).setBounds(570,y+10,100,30);
         //add(buttonDraw).setBounds(250,70,150,40);
 
         addMouseListener(this);
         addMouseMotionListener(this);
+
+        buttonsAction();
+    }
+
+    private void buttonsAction(){
+        buttonClear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listOfFigure.clear();
+                repaint();
+                activeFigure = new NonChooseFigure();
+            }
+        });
     }
 
 
@@ -56,41 +74,51 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         mouseX = me.getX();
         mouseY = me.getY();
         if (radioCircle.isSelected()){
-            activeFigure = listFigure.get(0);
+            activeFigure = new Circle();
+            repaint();
         } else if (radioRectangle.isSelected()) {
-            activeFigure = listFigure.get(1);
+            activeFigure = new Rectangle();
+            repaint();
         } else if (radioOval.isSelected()) {
-            activeFigure = listFigure.get(2);
+            activeFigure = new Oval();
+            repaint();
         } else if (radioSegment.isSelected()) {
-            activeFigure = listFigure.get(3);
+            activeFigure = new Segment();
+            repaint();
         } else if (radioSquare.isSelected()) {
-            activeFigure = listFigure.get(4);
+            activeFigure = new Square();
+            repaint();
         } else if (radioTriangle.isSelected()) {
-            activeFigure = listFigure.get(5);
-        } else {
-            activeFigure = listFigure.get(6);
+            activeFigure = new Triangle();
+            repaint();
         }
-        repaint();
     }
 
 
     public void mousePressed(MouseEvent me) {
-        activeFigure.x0 = me.getX();
-        activeFigure.y0 = me.getY();
-        activeFigure = listFigure.get(6);
+        activeFigure.xStart = me.getX();
+        activeFigure.yStart = me.getY();
         repaint();
     }
 
 
     public void mouseReleased(MouseEvent me) {
-
+        activeFigure.setX(activeFigure.xStart);
+        activeFigure.setY(activeFigure.yStart);
+        activeFigure.setX1(me.getX());
+        activeFigure.setY1(me.getY());
+        listOfFigure.add(activeFigure);
     }
 
 
     public void paint(Graphics g) {
         super.paint(g);
 
-        activeFigure.paintFigure(g,mouseX,mouseY);
+        for (Figure temp : listOfFigure){
+            temp.paintFigure(g,temp.getX1(),temp.getY1(),temp.getX(),temp.getY());
+        }
+
+        activeFigure.paintFigure(g,mouseX,mouseY,activeFigure.xStart,activeFigure.yStart);
     }
 
     public void mouseClicked(MouseEvent me) {

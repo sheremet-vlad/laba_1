@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Square extends Figure {
     public static int width;
-    public void paintFigure(Graphics g, int x, int y){
+    public void paintFigure(Graphics g, int x, int y, int x0, int y0){
         if (x0 < x){
             width = x - x0;
             if(y0 < y){
