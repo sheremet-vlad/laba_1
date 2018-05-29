@@ -3,8 +3,11 @@ package main;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 
 import static main.Main_class.arrayCoordinates;
@@ -16,7 +19,12 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
     int mouseX,mouseY;
     public static ArrayList<Figure> listOfFigure = new ArrayList<>();
 
-    private JButton buttonClear = new JButton("Очистить");
+    private JButton buttonClear = new JButton("Очистить"),
+                    buttonSerialize = new JButton("Записать"),
+                    buttonLoad = new JButton("Загрузить");
+
+
+    private static JComboBox comboBoxFigureNumber = new JComboBox();
 
 
     private JRadioButton    radioCircle = new JRadioButton("Круг",false),
@@ -49,7 +57,12 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         add(radioSegment).setBounds(380,y,width,height);
         add(radioSquare).setBounds(480,y,width-20,height);
         add(buttonClear).setBounds(570,y+10,100,30);
+        add(buttonSerialize).setBounds(10,y+58,100,30);
+        add(buttonLoad).setBounds(140,y+58,100,30);
         //add(buttonDraw).setBounds(250,70,150,40);
+
+        comboBoxFigureNumber = new JComboBox();
+        add(comboBoxFigureNumber).setBounds(270,y+58,100,30);
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -62,8 +75,55 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 listOfFigure.clear();
+                comboBoxFigureNumber.removeAllItems();
                 repaint();
                 activeFigure = new NonChooseFigure();
+            }
+        });
+
+        buttonSerialize.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    FileOutputStream fos = new FileOutputStream("E:\\ВЛАД\\4_sem\\oop\\temp.txt");
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    int i = 0;
+                    for (Figure temp : listOfFigure){
+                        oos.writeObject(temp);
+                        i++;
+                    }
+                    oos.flush();
+                    oos.close();
+
+                    //write count if figure
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("E:\\ВЛАД\\4_sem\\oop\\figureCount.txt"));
+                    writer.write(i+"");
+                    writer.flush();
+                    writer.close();
+                }
+                catch (Exception ee){
+                    ee.printStackTrace();
+                }
+            }
+        });
+
+        buttonLoad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader("E:\\ВЛАД\\4_sem\\oop\\figureCount.txt"));
+                    int figureCount = Integer.parseInt(reader.readLine());
+                    FileInputStream fis = new FileInputStream("E:\\ВЛАД\\4_sem\\oop\\temp.txt");
+                    ObjectInputStream oin = new ObjectInputStream(fis);
+                    for (int i = 0; i < figureCount; i++) {
+                        comboBoxFigureNumber.addItem("Figure "+ i);
+                        listOfFigure.add((Figure)oin.readObject());
+                    }
+                    repaint();
+                }
+                catch (Exception ee) {
+                    ee.printStackTrace();
+                }
             }
         });
     }
@@ -108,6 +168,9 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         activeFigure.setX1(me.getX());
         activeFigure.setY1(me.getY());
         listOfFigure.add(activeFigure);
+
+        //add figure to combo box
+        comboBoxFigureNumber.addItem("String " + (listOfFigure.size()-1));
     }
 
 

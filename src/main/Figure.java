@@ -2,8 +2,9 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class Figure extends JPanel {
+public abstract class Figure extends JPanel implements Serializable{
 
     public abstract void paintFigure(Graphics g, int x, int y, int x0, int y0);
     public static int yStart,xStart;
