@@ -21,10 +21,12 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
 
     private JButton buttonClear = new JButton("Очистить"),
                     buttonSerialize = new JButton("Записать"),
+                    buttonChange = new JButton("Изменить"),
                     buttonLoad = new JButton("Загрузить");
 
 
     private static JComboBox comboBoxFigureNumber = new JComboBox();
+    private static JTextField fieldLineWidth = new JTextField("1",10);
 
 
     private JRadioButton    radioCircle = new JRadioButton("Круг",false),
@@ -34,7 +36,8 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
                             radioSquare = new JRadioButton("Квадрат", false),
                             radioTriangle = new JRadioButton("Треуггольник", false);
 
-
+    private static int indexToChange = -1;
+    private static boolean flag = true;
 
     public Form() {
         setLayout(null);
@@ -63,6 +66,8 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
 
         comboBoxFigureNumber = new JComboBox();
         add(comboBoxFigureNumber).setBounds(270,y+58,100,30);
+        add(buttonChange).setBounds(400,y + 58,100,30);
+        add(fieldLineWidth).setBounds(550,y + 58, 40,30);
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -126,6 +131,15 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
                 }
             }
         });
+
+
+        buttonChange.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                indexToChange = comboBoxFigureNumber.getSelectedIndex();
+                repaint();
+            }
+        });
     }
 
 
@@ -152,6 +166,7 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
             activeFigure = new Triangle();
             repaint();
         }
+        flag = true;
     }
 
 
@@ -167,18 +182,38 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         activeFigure.setY(activeFigure.yStart);
         activeFigure.setX1(me.getX());
         activeFigure.setY1(me.getY());
-        listOfFigure.add(activeFigure);
+
+
 
         //add figure to combo box
-        comboBoxFigureNumber.addItem("String " + (listOfFigure.size()-1));
+        if (flag){
+            listOfFigure.add(activeFigure);
+            comboBoxFigureNumber.addItem("Shape " + (listOfFigure.size()-1));
+        }
+        indexToChange = -1;
+
+        activeFigure = new NonChooseFigure();
     }
 
 
     public void paint(Graphics g) {
         super.paint(g);
+        int index = 0;
+
 
         for (Figure temp : listOfFigure){
-            temp.paintFigure(g,temp.getX1(),temp.getY1(),temp.getX(),temp.getY());
+            if (index == indexToChange) {
+                activeFigure = temp;
+                activeFigure.xStart = temp.getX();
+                activeFigure.yStart = temp.getY();
+                flag = false;
+                //temp.paintFigure(temp.getG(),mouseX,mouseY, temp.getX(), temp.getY());
+               // indexToChange = -1;
+            }
+            else {
+                temp.paintFigure(g, temp.getX1(), temp.getY1(), temp.getX(), temp.getY());
+            }
+            index++;
         }
 
         activeFigure.paintFigure(g,mouseX,mouseY,activeFigure.xStart,activeFigure.yStart);

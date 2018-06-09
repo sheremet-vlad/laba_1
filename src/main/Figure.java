@@ -28,6 +28,7 @@ public abstract class Figure extends JPanel implements Serializable{
         return y1;
     }
 
+
     public void setX(int x) {
         this.x = x;
     }
@@ -43,4 +44,5 @@ public abstract class Figure extends JPanel implements Serializable{
     public void setY1(int y1) {
         this.y1 = y1;
     }
+
 }
