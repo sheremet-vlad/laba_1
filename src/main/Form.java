@@ -37,10 +37,13 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
                             radioTriangle = new JRadioButton("Треуггольник", false);
 
     private static int indexToChange = -1;
+
     private static boolean flag = true;
 
-    public Form() {
+    public Form(String language, String color) {
         setLayout(null);
+
+        createComponent(language,color);
 
         //радио группа
         typeFigure.add(radioTriangle);
@@ -75,6 +78,10 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         buttonsAction();
     }
 
+    private static void createComponent(String language, String color) {
+
+    }
+
     private void buttonsAction(){
         buttonClear.addActionListener(new ActionListener() {
             @Override
@@ -90,7 +97,7 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    FileOutputStream fos = new FileOutputStream("E:\\ВЛАД\\4_sem\\oop\\temp.txt");
+                    FileOutputStream fos = new FileOutputStream("E:\\ВЛАД\\4_sem\\oop\\serializeShapes.txt");
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     int i = 0;
                     for (Figure temp : listOfFigure){
@@ -118,12 +125,19 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
                 try {
                     BufferedReader reader = new BufferedReader(new FileReader("E:\\ВЛАД\\4_sem\\oop\\figureCount.txt"));
                     int figureCount = Integer.parseInt(reader.readLine());
-                    FileInputStream fis = new FileInputStream("E:\\ВЛАД\\4_sem\\oop\\temp.txt");
+
+                    reader.close();
+
+                    FileInputStream fis = new FileInputStream("E:\\ВЛАД\\4_sem\\oop\\serializeShapes.txt");
                     ObjectInputStream oin = new ObjectInputStream(fis);
                     for (int i = 0; i < figureCount; i++) {
                         comboBoxFigureNumber.addItem("Figure "+ i);
                         listOfFigure.add((Figure)oin.readObject());
                     }
+
+                    oin.close();
+                    fis.close();
+
                     repaint();
                 }
                 catch (Exception ee) {
