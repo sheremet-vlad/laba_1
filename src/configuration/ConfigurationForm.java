@@ -1,21 +1,23 @@
 package configuration;
 
 import main.Form;
+import main.Main_class;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.EOFException;
 import java.util.LinkedList;
 
 import static create_gui_form.SwingConsole.run;
 import static create_gui_form.SwingConsole.run1;
 
 public class ConfigurationForm extends JFrame{
-    private static JComboBox comboBoxTypes;
+    public static JComboBox comboBoxTypes;
     private static JButton buttonChoose = new JButton("Выбрать");
     private static JButton buttonNewUser = new JButton("Создать нового");
 
-    private static LinkedList<User> usersList = new LinkedList<>();
+    public static LinkedList<User> usersList = new LinkedList<>();
 
     public ConfigurationForm() {
         setLayout(null);
@@ -47,8 +49,12 @@ public class ConfigurationForm extends JFrame{
         buttonChoose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                User user = usersList.get(comboBoxTypes.getSelectedIndex());
-                run(new Form(user.language, user.color),700,700);
+                try {
+                    User user = usersList.get(comboBoxTypes.getSelectedIndex());
+                    run(new Form(user.language, user.color), 668, 700);
+                } catch (IndexOutOfBoundsException ee) {
+                    JOptionPane.showMessageDialog(Main_class.form, "Empty file");
+                }
             }
         });
 

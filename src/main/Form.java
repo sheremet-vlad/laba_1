@@ -26,15 +26,13 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
 
 
     private static JComboBox comboBoxFigureNumber = new JComboBox();
-    private static JTextField fieldLineWidth = new JTextField("1",10);
 
-
-    private JRadioButton    radioCircle = new JRadioButton("Круг",false),
-                            radioRectangle = new JRadioButton("Прямоугольник", false),
-                            radioOval = new JRadioButton("Овал", false),
-                            radioSegment = new JRadioButton("Отрезок", false),
-                            radioSquare = new JRadioButton("Квадрат", false),
-                            radioTriangle = new JRadioButton("Треуггольник", false);
+    private JRadioButton    radioCircle,
+                            radioRectangle,
+                            radioOval,
+                            radioSegment,
+                            radioSquare,
+                            radioTriangle;
 
     private static int indexToChange = -1;
 
@@ -56,13 +54,13 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         int width = 100, height = 50, y = 20;
 
         //добавление компонентов
-        add(radioCircle).setBounds(10,y,width-50,height);
-        add(radioRectangle).setBounds(80,y,width+20,height);
-        add(radioTriangle).setBounds(200,y,width+20,height);
-        add(radioOval).setBounds(320,y,width-40,height);
-        add(radioSegment).setBounds(380,y,width,height);
-        add(radioSquare).setBounds(480,y,width-20,height);
-        add(buttonClear).setBounds(570,y+10,100,30);
+        add(radioCircle).setBounds(10,y,width,height);
+        add(radioRectangle).setBounds(110,y,width,height);
+        add(radioTriangle).setBounds(210,y,width,height);
+        add(radioOval).setBounds(310,y,width,height);
+        add(radioSegment).setBounds(410,y,width,height);
+        add(radioSquare).setBounds(510,y,width+29,height);
+        add(buttonClear).setBounds(540,y+58,100,30);
         add(buttonSerialize).setBounds(10,y+58,100,30);
         add(buttonLoad).setBounds(140,y+58,100,30);
         //add(buttonDraw).setBounds(250,70,150,40);
@@ -70,7 +68,6 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         comboBoxFigureNumber = new JComboBox();
         add(comboBoxFigureNumber).setBounds(270,y+58,100,30);
         add(buttonChange).setBounds(400,y + 58,100,30);
-        add(fieldLineWidth).setBounds(550,y + 58, 40,30);
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -78,8 +75,41 @@ public class Form extends JFrame implements MouseListener, MouseMotionListener {
         buttonsAction();
     }
 
-    private static void createComponent(String language, String color) {
+    private void createComponent(String language, String color) {
+        if (language.equals("Русский")){
+            radioCircle = new JRadioButton("Круг", false);
+            radioRectangle = new JRadioButton("Прямоугольник", false);
+            radioOval = new JRadioButton("Овал", false);
+            radioSegment = new JRadioButton("Отрезок", false);
+            radioSquare = new JRadioButton("Квадрат", false);
+            radioTriangle = new JRadioButton("Треуггольник", false);
 
+            buttonClear = new JButton("Очистить");
+            buttonSerialize = new JButton("Записать");
+            buttonChange = new JButton("Изменить");
+            buttonLoad = new JButton("Загрузить");
+        }
+        else {
+            radioCircle = new JRadioButton("Circle", false);
+            radioRectangle = new JRadioButton("Rect", false);
+            radioOval = new JRadioButton("Oval", false);
+            radioSegment = new JRadioButton("Segment", false);
+            radioSquare = new JRadioButton("Square", false);
+            radioTriangle = new JRadioButton("Triangle", false);
+
+            buttonClear = new JButton("Delete");
+            buttonSerialize = new JButton("Write");
+            buttonChange = new JButton("Change");
+            buttonLoad = new JButton("Load");
+        }
+
+        if (color.equals("Красный")) {
+            this.getContentPane().setBackground(new Color(255,0,0));
+        } else if (color.equals("Синий")) {
+            this.getContentPane().setBackground(new Color(0,0,255));
+        } else {
+            this.getContentPane().setBackground(new Color(255,255,255));
+        }
     }
 
     private void buttonsAction(){

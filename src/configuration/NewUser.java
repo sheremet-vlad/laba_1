@@ -40,6 +40,7 @@ public class NewUser extends JFrame{
                     user.language = comboBoxLanguage.getSelectedItem() + "";
                     user.name = fieldName.getText();
                     Serialize.serializeNewUser(user);
+                    dispose();
                 }
             }
         });
